@@ -3,7 +3,7 @@
 // bodyparser exposes the body portion of an incoming request on "req.body"
 
 
-// import express from 'express';
+import express from 'express';
 // import bodyParser from 'body-parser';
 // import cors from 'cors';
 
@@ -13,7 +13,7 @@
 // import usersRoutes from './routes/user';
 // import caseRoutes from './routes/case';
 
-import * as express from "express";
+// import * as express from "express";
 
 const app = express();
 
