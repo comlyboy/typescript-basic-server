@@ -4,22 +4,21 @@
 
 
 import express from 'express';
-// import bodyParser from 'body-parser';
-// import cors from 'cors';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
-// import connect_DB from './db/connection';
+import connect_DB from './db/connection';
 
 
-// import usersRoutes from './routes/user';
-// import caseRoutes from './routes/case';
+import usersRoutes from './routes/user';
+import caseRoutes from './routes/case';
 
-// import * as express from "express";
 
 const app = express();
 
-// app.use(cors());
-// app.use(bodyParser.json());
-// // app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
 
 
 // // Connecting to mongoDB database
@@ -37,9 +36,9 @@ app.use((req, res, next) => {
 
 
 
-// // For various routes
-// app.use('/api/v1', usersRoutes);
-// app.use('/api/v1', caseRoutes);
+// For various routes
+app.use('/api/v1', usersRoutes);
+app.use('/api/v1', caseRoutes);
 
 
 app.get('/', (req: express.Request, res: express.Response): express.Response => {
