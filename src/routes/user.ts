@@ -36,7 +36,6 @@ async function signupUser(req: express.Request, res: express.Response, next: exp
         });
 
         const result = await new_user_obj.save();
-        console.log(result);
 
         const totalUser = await User.countDocuments().exec();
         if (totalUser == 1) {
