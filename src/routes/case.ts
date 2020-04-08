@@ -49,6 +49,7 @@ async function newCase(req: express.Request, res: express.Response, next: expres
 }
 
 
+
 router.get("/case", authCheck, getCases);
 async function getCases(req: express.Request, res: express.Response, next: express.NextFunction) {
     const casesPerPage = +req.query.pagesize;

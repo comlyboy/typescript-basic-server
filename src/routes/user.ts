@@ -19,7 +19,6 @@ router.post("/user/signup", signupUser)
 async function signupUser(req: express.Request, res: express.Response, next: express.NextFunction) {
 
     const user_req_body: ISignup = req.body;
-    console.log(user_req_body);
     try {
         const user = await User.findOne({ userName: req.body.userName }).exec();
         if (user) {
@@ -38,7 +37,7 @@ async function signupUser(req: express.Request, res: express.Response, next: exp
         const result = await new_user_obj.save();
 
         const totalUser = await User.countDocuments().exec();
-        if (totalUser == 1) {
+        if (totalUser === 1) {
             await User.updateOne(
                 { _id: result._id },
                 {
@@ -91,7 +90,7 @@ async function loginUser(req: express.Request, res: express.Response, next: expr
                 _id: fetchedUser._id,
                 userName: fetchedUser.userName,
                 state: fetchedUser.state,
-                isAdmin: fetchedUser.isAdmin
+                isAdmin: fetchedUser.isAdmin,
             }
         });
 
@@ -117,7 +116,7 @@ async function userLastLogin(req: express.Request, res: express.Response, next: 
             },
             {
                 $set: {
-                    lastLogin: lastLogin_date
+                    lastLogin: lastLogin_date,
                 }
             }).exec();
 
@@ -133,14 +132,12 @@ async function userLastLogin(req: express.Request, res: express.Response, next: 
 
 }
 
-
-
 // Getting one user for editing and details pages
 router.get("/user/:_id", authCheck, getUserProfile);
 async function getUserProfile(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
         const user = await User.findById({
-            _id: req.params._id
+            _id: req.params._id,
         }, { password: false }).exec();
 
         if (user) {
