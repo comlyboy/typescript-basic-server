@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 
 // // Connecting to mongoDB database
-// connect_DB();
+connect_DB();
 
 
 // permissions
