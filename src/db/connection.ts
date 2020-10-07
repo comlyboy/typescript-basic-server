@@ -1,20 +1,8 @@
 import mongoose from 'mongoose';
 
-const DB_URL = "mongodb+srv://corneliusDbUser:corneliusDbPassword@ncdc-help-database-fcwkp.mongodb.net/test?retryWrites=true&w=majority";
+const DB_URL = "database link";
 
-const DB_URL_local = "mongodb://localhost:27017/Covid19_help_DB";
-
-
-// // Connecting to mongoDB atlas
-// mongoose.connect("mongodb+srv://cornelius:d8c8fLcOVovfzHpo@cluster1-pauiv.mongodb.net/easy-client?retryWrites=true&w=majority", { useNewUrlParser: true })
-
-//     .then(result => {
-// })
-//     .catch(err => {
-//         console.log(err);
-//     });
-
-
+const DB_URL_local = "local database link";
 
 const connect_DB = async () => {
     try {
