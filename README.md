@@ -1,4 +1,4 @@
-Typescript App on Heroku
+Basic Typescript App on Heroku
 ========================
 
 This is a simple Node.js + Express application written in Typescript
@@ -24,7 +24,7 @@ the application.
 ## How this works
 
 Typically you will add typescript as a devDependency to your package.json.
-But this won't work on Heroku since those dependencies are not downloaded
+But this won't work on Heroku since those dependencies are not downloaded, same with other dependencies
 (due to `NODE_ENV` being set to `production`).
 
 In order to go around this issue you just simply need to add typescript

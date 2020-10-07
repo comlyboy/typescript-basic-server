@@ -1,5 +1,5 @@
 {
-  "name": "heroku-typescript",
+  "name": "typescript-server",
   "scripts": {
     "clear": "rimraf ./dist",
     "ts:watch": "tsc -w",
@@ -11,6 +11,18 @@
     "start": "npm run build && npm run prod:serve",
     "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
+  "keywords": [
+    "node",
+    "typscript",
+    "mongoDB",
+    "typescript starter",
+    "heroku node server",
+    "basic starter",
+    "typescript basic server",
+    "basic typescript server"
+  ],
+  "author": "Cornelius Okeke",
+  "license": "MIT",
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.17.0",
@@ -28,10 +40,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.9",
     "mongoose-unique-validator": "^2.0.3",
-    "nodemon": "^1.19.1",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3",
-    "underscore": "^1.10.2"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
