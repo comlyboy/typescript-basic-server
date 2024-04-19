@@ -1,12 +1,10 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 
-import User from './auth.schema';
-import { AuthDto } from './auth.dto';
+// import { AuthDto } from './auth.dto';
 
 
 export async function signUp(req: express.Request, res: express.Response) {
-    const { email, password }: AuthDto = req.body;
 
     try {
 
@@ -25,7 +23,7 @@ export async function signUp(req: express.Request, res: express.Response) {
 
 
 export async function signIn(req: express.Request, res: express.Response) {
-    const { email, password }: AuthDto = req.body;
+    // const { email, password }: AuthDto = req.body;
 
     try {
 
@@ -42,7 +40,3 @@ export async function signIn(req: express.Request, res: express.Response) {
     }
 
 }
-
-
-
-
