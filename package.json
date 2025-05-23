@@ -13,7 +13,8 @@
 	},
 	"keywords": [
 		"node",
-		"typscript"
+		"typescript",
+		"express"
 	],
 	"author": "Cornelius Okeke",
 	"license": "MIT",

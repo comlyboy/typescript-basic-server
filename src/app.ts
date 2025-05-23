@@ -5,17 +5,17 @@ import cors from 'cors';
 
 import { AuthRoute } from './core/auth/auth.route';
 
-const application = express();
+export const app = express();
 
-application.use(cors());
-application.use(express.json());
+app.use(cors());
+app.use(express.json());
 
 
 // Connecting to mongoDB database
 // connect_DB();
 
 // permissions
-application.use((req, res, next) => {
+app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -23,10 +23,5 @@ application.use((req, res, next) => {
 	next();
 });
 
-
-
 // For various routes
-application.use('/api/v1/auth', AuthRoute);
-
-
-export default application;
+app.use('/api/v1/auth', AuthRoute);
