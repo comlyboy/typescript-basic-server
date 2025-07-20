@@ -11,6 +11,7 @@ export default defineConfig((configuration) => {
 			outDir: 'dist',
 			minify: 'terser', // Enable minification for better dead code elimination
 			ssr: true,
+			sourcemap: true,
 			rollupOptions: {
 				input: resolve(__dirname, 'src/server.ts'),
 				external: [
