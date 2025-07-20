@@ -1,42 +1,17 @@
-import express from 'express';
-// import jwt from 'jsonwebtoken';
+import { NextFunction, Request, Response, Router } from 'express';
 
-// import { AuthDto } from './auth.dto';
+export class AuthController {
+	private static readonly router = Router();
+	private static readonly prefix = 'auth/';
 
+	static init() {
+		this.router.post(`${this.prefix}register`, this.register);
+		this.router.post(`${this.prefix}login'`, this.login);
+		return this.router;
+	};
 
-export async function signUp(req: express.Request, res: express.Response) {
+	private static async register(req: Request, res: Response, next: NextFunction) { }
 
-    try {
-
-        // Business logic goes here
-
-        res.status(201).json({
-            message: 'Registered successfully!',
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message: 'Something went wrong!',
-        });
-    }
-}
-
-
-export async function signIn(req: express.Request, res: express.Response) {
-    // const { email, password }: AuthDto = req.body;
-
-    try {
-
-        // Business logic goes here
-
-        res.status(200).json({
-            message: 'logged in successfully'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message: 'Something went wrong!'
-        });
-    }
+	private static async login(req: Request, res: Response, next: NextFunction) { }
 
 }

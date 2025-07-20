@@ -1,27 +1,39 @@
-import express from 'express';
+import 'reflect-metadata';
 import cors from 'cors';
+import helmet from 'helmet';
+import express, { Express, Router } from 'express';
+import compression from 'compression';
 
-// import { connect_DB } from './database/connection';
+import { reqResLogger } from './utils';
+import { AuthController, UserController } from './core';
 
-import { AuthRoute } from './core/auth/auth.route';
+export class ApiApplication {
+	public readonly app: Express;
 
-export const app = express();
+	private readonly controllers = [
+		AuthController,
+		UserController
+	];
 
-app.use(cors());
-app.use(express.json());
+	constructor() {
+		this.app = express();
+		this.registerMiddlewares();
+		this.registerControllers();
+	}
 
+	private registerMiddlewares() {
+		this.app.use(cors());
+		this.app.use(helmet());
+		this.app.use(compression());
+		this.app.use(reqResLogger());
+		this.app.use(express.json());
+	}
 
-// Connecting to mongoDB database
-// connect_DB();
-
-// permissions
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
-	next();
-});
-
-// For various routes
-app.use('/api/v1/auth', AuthRoute);
+	private registerControllers() {
+		const apiRouter = Router();
+		for (const Controller of this.controllers) {
+			apiRouter.use(Controller.init());
+		}
+		this.app.use('/api/v1', apiRouter);
+	}
+}

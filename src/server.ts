@@ -1,7 +1,7 @@
-import { app } from './app';
+import { ApiApplication } from './app';
 
-const port = process.env.PORT || 3030;
+const PORT = process.env.PORT || 3030;
 
-app.listen(port, () => {
-	console.log(`API running at http://localhost:${port}`)
+new ApiApplication().app.listen(PORT, () => {
+	console.log(`API running at http://localhost:${PORT}`)
 });
