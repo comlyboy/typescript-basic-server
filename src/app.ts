@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import cors from 'cors';
 import helmet from 'helmet';
-import express, { Express, Router } from 'express';
 import compression from 'compression';
+import express, { Express, Router } from 'express';
 
 import { reqResLogger } from './utils';
 import { AuthController, UserController } from './core';
@@ -27,6 +27,7 @@ export class ApiApplication {
 		this.app.use(compression());
 		this.app.use(reqResLogger());
 		this.app.use(express.json());
+		this.app.use(express.urlencoded({ extended: true }));
 	}
 
 	private registerControllers() {
@@ -34,6 +35,6 @@ export class ApiApplication {
 		for (const Controller of this.controllers) {
 			apiRouter.use(Controller.init());
 		}
-		this.app.use('/api/v1', apiRouter);
+		this.app.use('api/v1', apiRouter);
 	}
 }
