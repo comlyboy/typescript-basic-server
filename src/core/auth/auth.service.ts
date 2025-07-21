@@ -1,20 +1,11 @@
-import { Request, Response } from 'express';
+export class AuthService {
 
-export async function signIn(req: Request, res: Response) {
-	// const { email, password }: AuthDto = req.body;
+	async register() {
 
-	try {
+	}
 
-		// Business logic goes here
+	async login() {
 
-		res.status(200).json({
-			message: 'logged in successfully'
-		});
-
-	} catch (error) {
-		res.status(500).json({
-			message: 'Something went wrong!'
-		});
 	}
 
 }

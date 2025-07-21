@@ -2,10 +2,13 @@
 	"name": "typescript-server",
 	"scripts": {
 		"prebuild": "rimraf ./dist",
-		"ts:build": "tsc -b",
-		"start:dev": "ts-node-dev --respawn src/server.ts",
+		"ts:watch": "tsc -w",
 		"build": "vite build",
-		"start": "node dist/server.js",
+		"ts:build": "tsc",
+		"serve": "nodemon dist/server.js",
+		"start:dev": "concurrently \"npm run ts:watch\" \"npm run serve\"",
+		"prod:serve": "node dist/server.js",
+		"start": "npm run build && npm run prod:serve",
 		"tslint": "tslint -c tslint.json -p tsconfig.json"
 	},
 	"keywords": [
@@ -40,6 +43,8 @@
 		"@types/mongoose": "^5.11.97",
 		"@types/morgan": "^1.9.10",
 		"@types/node": "^24.0.15",
+		"concurrently": "^9.2.0",
+		"nodemon": "^3.1.10",
 		"rimraf": "^6.0.1",
 		"ts-node-dev": "^2.0.0",
 		"tslint": "^6.1.3",

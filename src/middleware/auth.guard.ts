@@ -3,8 +3,8 @@
 
 import jwt from 'jsonwebtoken';
 import express from 'express';
+import { UserSchema } from 'src/core';
 
-import { UserSchema } from '../core/auth/auth.schema';
 
 
 export default async function AuthGuard(req: express.Request, res: express.Response, next: express.NextFunction) {
