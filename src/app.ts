@@ -1,54 +1,93 @@
-import 'reflect-metadata';
-import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import express, { Express, NextFunction, Request, Response, Router } from 'express';
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import express, { Express, NextFunction, Request, Response, Router } from "express";
 
-import { reqResLogger } from './utils';
-import { AuthController, UserController } from './core';
-import { HttpError } from 'http-errors';
+import { reqResLogger } from "@incloodsolutions/node-toolkit";
+import { CustomException, generateISODate } from "@incloodsolutions/toolkit";
 
-export class ApiApplication {
-	readonly app: Express;
-	private readonly controllers = [
-		AuthController,
-		UserController
-	];
+import { UtilsController } from "./core/utils";
+import { MatechController, VisitsController } from "./core";
+import { rateLimiter } from "./middlewares/rate-limiter";
 
-	constructor() {
-		this.app = express();
-		this.registerMiddlewares();
-		this.registerControllers();
-	}
+let application: Express | null = null;
 
-	private registerMiddlewares() {
-		this.app.use(cors());
-		this.app.use(helmet());
-		this.app.use(compression());
-		this.app.use(reqResLogger());
-		this.app.use(express.json());
-		this.app.use(express.urlencoded({ extended: true }));
-	}
+export async function createApplication(): Promise<Express> {
+	application = express();
 
-	private registerControllers() {
-		const apiRouter = Router();
-		for (const controller of this.controllers) {
-			apiRouter.use(controller.init());
+	registerMiddlewares();
+
+	// Initialise external dependencies.
+	// await Database.connect();
+
+	registerRoutes();
+	register404();
+	registerErrorHandler();
+
+	return application;
+}
+
+function registerMiddlewares(): void {
+	application.use(cors());
+	application.use(helmet());
+	application.use(compression());
+	application.use(reqResLogger());
+
+	application.use(express.json({ limit: "5mb" }));
+	application.use(express.urlencoded({ extended: true }));
+
+	application.use(rateLimiter);
+}
+
+function registerRoutes(): void {
+	const router = Router();
+
+	application.get("/health", (_, res) => {
+		res.json({
+			success: true,
+			uptime: process.uptime(),
+			timestamp: new Date().toISOString(),
+		});
+	});
+
+	router.use(new MatechController().init());
+	router.use(new UtilsController().init());
+	router.use(new VisitsController().init());
+
+	application.use("/api", router);
+}
+
+function register404(): void {
+	application.use((req: Request, res: Response) => {
+		res.status(404).json({
+			success: false,
+			message: "Route not found",
+			path: req.originalUrl,
+			statusCode: 404,
+		});
+	});
+}
+
+function registerErrorHandler(): void {
+	application.use((error: CustomException, req: Request, res: Response, next: NextFunction) => {
+		console.log('HTTP Error', error);
+
+		if (res.headersSent) {
+			return next(error);
 		}
-		this.app.get('/', (req: Request, res: Response, next: NextFunction) => {
-			res.status(200).json({ success: true });
-		});
-		this.app.use('/api/v1', apiRouter);
-		this.app.use((error: HttpError, req: Request, res: Response, _: any) => {
-			console.log('error.statusCode', error.statusCode);
-			res.status(error.statusCode || 500).json({
-				success: false,
-				path: req.path,
+
+		res.status(error.statusCode ?? 500).json({
+			success: false,
+			message: error.message || "Internal Server Error",
+			statusCode: error.statusCode ?? 500,
+			error: {
+				message: error.message || "Internal Server Error",
+				statusCode: error.statusCode ?? 500,
+				timestamp: generateISODate(),
 				method: req.method,
-				message: error.message || 'Internal Server Error',
-				error
-			});
+				path: req.originalUrl,
+			}
 		});
 
-	}
+	});
 }

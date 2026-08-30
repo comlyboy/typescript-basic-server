@@ -1,21 +1,17 @@
-import { APIGatewayProxyCallbackV2, APIGatewayProxyEventV2, APIGatewayProxyHandlerV2, Context } from 'aws-lambda';
-import serverlessExpress from '@codegenie/serverless-express';
+import "reflect-metadata";
 
-import { ApiApplication } from './app';
+import { APIGatewayProxyCallbackV2, APIGatewayProxyEventV2, Context } from 'aws-lambda';
+import { Express } from 'express';
 
-let apiInstance: APIGatewayProxyHandlerV2;
+import { createApplication } from './app';
+import { initLambdaFunctionHandler } from '@incloodsolutions/node-toolkit';
 
-// https://youtu.be/9a74LuU2EoU
-// https://towardsaws.com/5-ways-to-speed-up-your-lambda-function-2163f63ffc49
-// https://lumigo.io/learn/aws-lambda-timeout-best-practices/
-// https://www.serverless.com/framework/docs/providers/aws/events/http-api#lambda-request-authorizers
+let expressInstance: Express = null;
 
 export async function handler(event: APIGatewayProxyEventV2, context: Context, callback: APIGatewayProxyCallbackV2) {
-	context.callbackWaitsForEmptyEventLoop = false;
-	if (!apiInstance) {
+	if (!expressInstance) {
 		console.log('LOG => Initializing new Lambda API instance');
-		const expressInstance = new ApiApplication().app;
-		apiInstance = serverlessExpress({ app: expressInstance });
+		expressInstance = await createApplication();
 	}
-	return await apiInstance(event, context, callback);
+	return initLambdaFunctionHandler({ app: expressInstance, event, context, callback });
 }
